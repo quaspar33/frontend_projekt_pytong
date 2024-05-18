@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const SessionsList = () => {
+function SessionsList() {
     const [selectedValue, setSelectedValue] = useState("");
     const [races, setRaces] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:5000/races");
-                const data = await response.json();
-                setRaces(data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
+                const response = await axios.get("http://127.0.0.1:5000/races");
+                setRaces(response.data);
+            } catch (err) {
+                console.log(err);
             }
         };
 
@@ -19,23 +19,21 @@ const SessionsList = () => {
     }, []);
 
     return (
-        <div>
-            <select
-                className="px-4 py-2 bg-gray-300 rounded-md border border-violet-950 focus:ring-2 focus:ring-color-8 focus:outline-none"
-                value={selectedValue}
-                onChange={(e) => setSelectedValue(e.target.value)}
-            >
-                <option>
-                    Wybierz sesję
+        <select
+            className="px-4 py-2 bg-gray-300 rounded-md border border-violet-950 focus:ring-2 focus:ring-color-8 focus:outline-none"
+            value={selectedValue}
+            onChange={(e) => setSelectedValue(e.target.value)}
+        >
+            <option>
+                Wybierz sesję
+            </option>
+            {races.map((item, index) => (
+                <option key={index} value={item}>
+                    {item.country_name} GP {item.year}
                 </option>
-                {races.map((item, index) => (
-                    <option>
-                        {item.country_name} GP {item.year}
-                    </option>
-                ))}
-            </select>
-        </div>
+            ))}
+        </select>
     );
-};
+}
 
 export default SessionsList;
