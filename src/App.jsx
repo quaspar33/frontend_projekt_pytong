@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import f1_logo from "../public/f1-Symbol.png"
+import f1_logo from "../public/f1-Symbol.png";
 import axios from "axios";
 
 function App() {
     const [selectedValue, setSelectedValue] = useState("");
     const [races, setRaces] = useState([]);
+    const [raceData, setRaceData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,6 +28,13 @@ function App() {
             console.log("Dane zostały wysłane:", selectedValue);
         } catch (error) {
             console.error("Błąd podczas wysyłania danych:", error);
+        }
+        try {
+            const response = await axios.get("http://127.0.0.1:5000/race");
+            setRaceData(response.data);
+            console.log("Dane zostały pobrane:", response.data);
+        } catch (error) {
+            console.error("Błąd podczas pobierania danych:", error);
         }
     };
 
@@ -62,9 +70,13 @@ function App() {
                     Wyślij dane
                 </button>
             </div>
-            <div className="flex mt-8 justify-center">
-                <ul className="rounded-md border border-blue-950 ml-60 mr-60 h-96 w-full">
-
+            <div className="flex mt-16 justify-center">
+                <ul className="rounded-md border border-blue-950 ml-60 mr-60 h-96 w-full overflow-auto">
+                    {Object.entries(raceData).map(([key, value], index) => (
+                        <li key={index} className="py-2 px-4 border-b border-black">
+                            <strong>{key}:</strong> {value}
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>
