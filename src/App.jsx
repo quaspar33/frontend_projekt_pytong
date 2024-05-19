@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import f1_logo from "../public/f1-Symbol.png";
 import axios from "axios";
+import { Bars3Icon, ArrowUpIcon } from "@heroicons/react/24/solid";
 
 function App() {
     const [selectedValue, setSelectedValue] = useState("");
     const [races, setRaces] = useState([]);
     const [raceData, setRaceData] = useState([]);
+    const [authors, setAuthors] = useState([]);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,17 +41,35 @@ function App() {
         }
     };
 
+
+
+
     return (
         <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen">
             <div className="flex justify-center h-20 bg-gray-300">
-                <img src={f1_logo} alt="Logo" className="h-15 mr-5"/>
-                <a className="text-black mt-3 font-medium text-5xl">
-                    PROJECT
-                </a>
+                <div className="flex mr-auto">
+                    <button
+                        className="rounded-md ml-1 hover:bg-gray-200 focus:outline-none transition duration-300 ease-in-out transform hover:scale-90"
+                        onClick={toggleMenu}
+                    >
+                        {menuOpen ? (
+                            <ArrowUpIcon className="h-10 w-20 text-indigo-950" />
+                        ) : (
+                            <Bars3Icon className="h-10 w-20 text-indigo-950" />
+                        )}
+                    </button>
+
+                </div>
+                <div className="flex justify-center mr-20">
+                    <img src={f1_logo} alt="Logo" className="h-15 mr-3"/>
+                    <a className="text-black mt-3 font-medium text-5xl">
+                        PROJECT
+                    </a>
+                </div>
             </div>
             <div className="flex mt-8 justify-center">
                 <select
-                    className="px-4 py-2 bg-gray-300 rounded-md border border-black focus:ring-2 focus:ring-color-8 focus:outline-none"
+                    className="px-4 py-2 bg-gray-200 rounded-md border border-black focus:ring-2 focus:ring-color-8 focus:outline-none"
                     value={selectedValue}
                     onChange={(e) => setSelectedValue(e.target.value)}
                 >
