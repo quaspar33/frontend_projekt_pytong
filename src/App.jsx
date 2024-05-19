@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import f1_logo from "../public/f1-Symbol.png";
 import axios from "axios";
-import { Bars3Icon, ArrowUpIcon } from "@heroicons/react/24/solid";
+import { Bars3Icon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 function App() {
     const [selectedValue, setSelectedValue] = useState("");
@@ -13,8 +13,10 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:5000/races");
-                setRaces(response.data);
+                const racesResponse = await axios.get("http://127.0.0.1:5000/races");
+                setRaces(racesResponse.data);
+                const authorsResponse = await axios.get("http://127.0.0.1:5000/authors");
+                setAuthors(authorsResponse.data);
             } catch (err) {
                 console.log(err);
             }
@@ -41,24 +43,33 @@ function App() {
         }
     };
 
-
-
+    const toggleMenu = async () => {
+        setMenuOpen(!menuOpen);
+    };
 
     return (
         <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen">
-            <div className="flex justify-center h-20 bg-gray-300">
+            <div className="flex justify-center border-b border-indigo-950 h-20 bg-gray-300 relative">
                 <div className="flex mr-auto">
                     <button
                         className="rounded-md ml-1 hover:bg-gray-200 focus:outline-none transition duration-300 ease-in-out transform hover:scale-90"
                         onClick={toggleMenu}
                     >
                         {menuOpen ? (
-                            <ArrowUpIcon className="h-10 w-20 text-indigo-950" />
+                            <ArrowLeftIcon className="h-10 w-20 text-indigo-950"/>
                         ) : (
-                            <Bars3Icon className="h-10 w-20 text-indigo-950" />
+                            <Bars3Icon className="h-10 w-20 text-indigo-950"/>
                         )}
                     </button>
-
+                    <div
+                        className={`absolute top-20 rounded-br w-50 bg-gray-300 transition-all duration-500 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                        <ul className="border-r border-indigo-950 overflow-auto">
+                            <li className="py-2 px-4 border-b border-indigo-950"> Autorzy: </li>
+                            {authors.map((author, index) => (
+                                <li className="py-2 px-4 border-b border-indigo-950" key={index}>{author.name} {author.ska}</li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
                 <div className="flex justify-center mr-20">
                     <img src={f1_logo} alt="Logo" className="h-15 mr-3"/>
@@ -92,9 +103,9 @@ function App() {
                 </button>
             </div>
             <div className="flex mt-16 justify-center">
-                <ul className="rounded-md border border-blue-950 ml-60 mr-60 h-96 w-full overflow-auto">
+                <ul className="rounded-md border border-indigo-950 ml-60 mr-60 h-96 w-full overflow-auto">
                     {Object.entries(raceData).map(([key, value], index) => (
-                        <li key={index} className="py-2 px-4 border-b border-black">
+                        <li key={index} className="py-2 px-4 border-b border-indigo-950">
                             <strong>{key}:</strong> {value}
                         </li>
                     ))}
