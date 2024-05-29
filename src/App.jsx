@@ -27,7 +27,7 @@ function App() {
 
     const handleSendData = async () => {
         try {
-            await axios.post("http://127.0.0.1:5000/send-data", {
+            await axios.post("http://127.0.0.1:5000/send-session_key-data", {
                 selectedValue: selectedValue
             });
             console.log("Dane zostały wysłane:", selectedValue);
