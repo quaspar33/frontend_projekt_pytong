@@ -31,19 +31,16 @@ function App() {
                 selectedValue: selectedValue
             });
             console.log("Dane zostały wysłane:", selectedValue);
-        } catch (error) {
-            console.error("Błąd podczas wysyłania danych:", error);
-        }
-        try {
+
             const response = await axios.get("http://127.0.0.1:5000/race");
             setRaceData(response.data);
             console.log("Dane zostały pobrane:", response.data);
         } catch (error) {
-            console.error("Błąd podczas pobierania danych:", error);
+            console.error("Błąd podczas wysyłania/pobierania danych:", error);
         }
     };
 
-    const toggleMenu = async () => {
+    const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
@@ -66,7 +63,7 @@ function App() {
                         <ul className="border-r border-indigo-950 overflow-auto">
                             <li className="py-2 px-4 border-b border-indigo-950"> Autorzy: </li>
                             {authors.map((author, index) => (
-                                <li className="py-2 px-4 border-b border-indigo-950" key={index}>{author.name} {author.ska}</li>
+                                <li className="py-2 px-4 border-b border-indigo-950" key={author.id || index}>{author.name} {author.ska}</li>
                             ))}
                         </ul>
                     </div>
@@ -84,11 +81,9 @@ function App() {
                     value={selectedValue}
                     onChange={(e) => setSelectedValue(e.target.value)}
                 >
-                    <option>
-                        Wybierz sesję
-                    </option>
-                    {races.map((item, index) => (
-                        <option key={index} value={item.session_key}>
+                    <option value="">Wybierz sesję</option>
+                    {races.map((item) => (
+                        <option key={item.session_key} value={item.session_key}>
                             {item.country_name} GP {item.year}
                         </option>
                     ))}
