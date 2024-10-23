@@ -1,5 +1,6 @@
-jak rozpocząć:
+how to start:
 
-1. przejdź do katalogu projektu w terminalu lub wierszu poleceń
-2. wykonaj polecenie "npm install"
-3. wykonaj polecenie "npm run dev"
+1. clone repo
+2. install npm
+3. run "npm install"
+4. run "npm run dev"
